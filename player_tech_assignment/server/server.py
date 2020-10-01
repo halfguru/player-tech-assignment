@@ -1,5 +1,5 @@
 """
-Music player update server
+Music player update simulation server
 """
 
 import datetime
@@ -12,7 +12,7 @@ import sys
 
 from ..csv_reader import MusicPlayerCsvReader
 
-__all__ = ['MusicPlayerUpdateServer']
+__all__ = ['MusicPlayerUpdateServer', 'SECRET_KEY']
 
 SECRET_KEY = 'playerTechAssignment'
 WORKING_DIR = Path.cwd()
@@ -21,7 +21,7 @@ VALID_CLIENT_CSV_FILE = WORKING_DIR / "tests" / "test_data" / "test_local_data.c
 
 class MusicPlayerUpdateServer:
     """
-    PlayerTechServer Object
+    Music player software update simulated server
     """
 
     def __init__(self):
@@ -40,14 +40,13 @@ class MusicPlayerUpdateServer:
         Verify authentification token
 
         Args:
-            func ([type]): [description]
+            func: Function prototype
 
         Returns:
-            [type]: [description]
+            func: Function prototype
         """
         @wraps(func)
         def wrapped(*args, **kwargs):
-            print("69"*100)
             token = request.args.get('token')
             if not token:
                 return jsonify({'message': 'Missing token'}), 403

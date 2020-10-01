@@ -1,11 +1,16 @@
 """
-Tests for  CLI commands.
+Tests for CLI commands.
 """
 
 from click.testing import CliRunner
+from pathlib import Path
 import unittest
 
 from player_tech_assignment import cli
+
+WORKING_DIR = Path.cwd()
+TEST_DATA_DIR = WORKING_DIR / "tests" / "test_data"
+TEST_CSV_FILE = TEST_DATA_DIR / "test_local_data.csv"
 
 
 class TestCli(unittest.TestCase):
@@ -40,15 +45,30 @@ class TestCli(unittest.TestCase):
         assert not cli_result.exception
         assert "software" in cli_result.output
 
-        result = self.runner.invoke(cli.cli_pta, ['update-software', '--macaddr', '1234'])
+        # Invalid command arguments
+        result = self.runner.invoke(cli.cli_pta, ['update-software', '--username', '1234'])
         output = result.output
-        expected_output = 'MAC address format is not valid'
+        expected_output = "Missing option '--password"
+        assert expected_output in output
+        assert result.exit_code is not 0
+
+        result = self.runner.invoke(cli.cli_pta, ['update-software', '--username', '1234', '--password', '1234'])
+        output = result.output
+        expected_output = "Missing option '--input"
+        assert expected_output in output
+        assert result.exit_code is not 0
+
+        # Invalid authentification credentials
+        result = self.runner.invoke(cli.cli_pta, ['update-software', '--username', '1234', '--password', '1234', '--input', TEST_CSV_FILE])
+        output = result.output
+        expected_output = "Could not get token because of invalid credentials"
         assert expected_output in output
         assert result.exit_code is 0
 
-        result = self.runner.invoke(cli.cli_pta, ['update-software', '--macaddr', '1B:7E:10:62:06:31'])
+        # Valid credentials
+        result = self.runner.invoke(cli.cli_pta, ['update-software', '--username', '1234', '--password', 'password', '--input', TEST_CSV_FILE])
         output = result.output
-        expected_output = 'Token is not defined'
+        expected_output = "Music players software update successful!"
         assert expected_output in output
         assert result.exit_code is 0
 
