@@ -1,15 +1,15 @@
 """
 Console script for player_tech_assignment.
 """
-
 import click
 import os
 
-from csv_reader import MusicPlayerCsvReader
-from server.server import MusicPlayerUpdateServer
-from client import MusicPlayerClient
+from .csv_reader import MusicPlayerCsvReader
+from .server.server import MusicPlayerUpdateServer
+from .client import MusicPlayerClient, MusicPlayerClientError
 
 DEFAULT_BASE_URL = "http://127.0.0.1:5000"
+DEFAULT_CSV_FILE = "test_data/input.csv"
 
 
 @click.group()
@@ -21,13 +21,14 @@ def cli_pta():
 
 
 @cli_pta.command()
-def read_csv():
+@click.option("--input", "-c", type=str, default=DEFAULT_CSV_FILE, help="Specify input csv file", required=False)
+def read_csv(input):
     """
     Read music player csv file
     """
-    csv_reader = MusicPlayerCsvReader('example.csv')
-    mac_addresses = csv_reader.get_mac_address()
-    print(mac_addresses)
+    csv_reader = MusicPlayerCsvReader(input)
+    mac_addresses = csv_reader.get_mac_address_list()
+    click.echo(mac_addresses)
 
 
 @cli_pta.command()
@@ -48,9 +49,13 @@ def login(username, password):
     """
     Login
     """
-    client = MusicPlayerClient(DEFAULT_BASE_URL)
-    token = client.login(username, password)
-    os.environ["token"] = token
+    try:
+        client = MusicPlayerClient(DEFAULT_BASE_URL)
+        token = client.login(username, password)
+        os.environ["token"] = token
+        print(token)
+    except MusicPlayerClientError as err:
+        click.echo("{0}".format(err))
 
 
 @cli_pta.command()
@@ -60,8 +65,12 @@ def update_software(macaddr, token):
     """
     Update software
     """
-    client = MusicPlayerClient(DEFAULT_BASE_URL)
-    client.update_player(macaddr, token)
+    try:
+        client = MusicPlayerClient(DEFAULT_BASE_URL)
+        res = client.update_player(macaddr, token)
+        print(res)
+    except MusicPlayerClientError as err:
+        click.echo("{0}".format(err))
 
 
 if __name__ == '__main__':
