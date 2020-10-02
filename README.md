@@ -6,6 +6,8 @@ Your tool will be used by different people using different operating systems. Th
 
 The input is a .csv file containing, at the very minimum, MAC addresses of players to update, always in the first column.
 
+<p align="center"><img src="https://asciinema.org/a/Hu3wgH9y4q2UtHQtk3qmVGP5M.svg"/></p>
+
 ## Usage
 Install dependencies:
 ```
@@ -47,6 +49,7 @@ $ pytest -v
 * [flask](https://github.com/pallets/flask) - Web framework
 * [pyJWT](https://github.com/jpadilla/pyjwt) - JSON Web Token library
 * [pytest](https://github.com/pytest-dev/pytest) - Test framework
+* [requests](https://github.com/psf/requests) - HTTP library
 
 ## License
 

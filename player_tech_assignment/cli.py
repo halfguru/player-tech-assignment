@@ -27,7 +27,7 @@ def run_simulation_server(ipaddr, port):
     Run music player update simulation server
     """
     server = MusicPlayerUpdateServer().app
-    server.run(host=ipaddr, debug=True, port=port)
+    server.run(host=ipaddr, debug=False, port=port)
 
 
 @cli_pta.command()

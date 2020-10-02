@@ -2,3 +2,4 @@ Click
 flask
 PyJWT
 pytest
+requests
