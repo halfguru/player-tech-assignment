@@ -6,7 +6,7 @@ Your tool will be used by different people using different operating systems. Th
 
 The input is a .csv file containing, at the very minimum, MAC addresses of players to update, always in the first column.
 
-<p align="center"><img src="https://asciinema.org/a/Hu3wgH9y4q2UtHQtk3qmVGP5M.svg"/></p>
+<p align="center"><img src="https://s1.gifyu.com/images/download52694b6991746c2c.gif"/></p>
 
 ## Usage
 Install dependencies:
